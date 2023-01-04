@@ -14,7 +14,7 @@ body{
 }
 
 h1{
-    font-size: 45px;
+    font-size: 50px;
     color: black;
 }
 /* border radius is important because it could cause the ball to bounce in an endless loop with no bricks hit.  */

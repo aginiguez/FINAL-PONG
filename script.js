@@ -18,15 +18,15 @@ const ball = {
 };
 
 const paddle = {
-    x: canvas.width / 2 -40,
-    y:canvas.height - 20,
+    x: canvas.width / 2 -20,
+    y:canvas.height - 20, 
     w: 80,
-    h: 15,
+    h: 10,
     speed: 8,
     dx: 0
 };
 
-const brickInfo = {
+const brickSpecs= {
     w: 70,
     h: 20,
     padding: 10,
@@ -40,9 +40,9 @@ const bricks = [];
 for (let i = 0; i < brickRowCount; i++){
     bricks[i] = [];
     for(let j= 0; j< brickColumnCount; j++){
-        const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-        const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-        bricks[i][j] = { x, y, ...brickInfo }; 
+        const x = i * (brickSpecs.w + brickSpecs.padding) + brickSpecs.offsetX;
+        const y = j * (brickSpecs.h + brickSpecs.padding) + brickSpecs.offsetY;
+        bricks[i][j] = { x, y, ...brickSpecs }; 
     }
 }
 
@@ -57,12 +57,9 @@ function drawBall() {
 
 //Draw paddle on canvas
 function drawPaddle() {
-    ctx.beginPath();
     ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
     ctx.fillStyle = 'black';
-    ctx.fill();
-    ctx.closePath();
-}
+    ctx.fill();}
 
 //Score
 function drawScore(){
@@ -102,7 +99,7 @@ function moveBall() {
     ball.x += ball.dx;
     ball.y += ball.dy;
     
-    //Wall collision (right/left)
+    // prevent ball from going through walls by changing its velocity
     if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
         ball.dx *= -1; //ball.dx = ball.dx * -1
     }
@@ -165,7 +162,6 @@ function showAllBricks() {
 
 //Draw everything 
 function draw() {
-    //clear canvas
 
     ctx.clearRect(0,0,canvas.width, canvas.height);
 
@@ -188,7 +184,8 @@ function update() {
 
 update();
 
-//Keydown event
+document.addEventListener('keydown', Keydown);//when user presses the arrow keys
+document.addEventListener('keyup', Keyup);//when the user releases the arrow key
 
 function Keydown(e) {
     if(e.key === 'Right' || e.key === 'ArrowRight'){
@@ -198,9 +195,6 @@ function Keydown(e) {
     }
 }
 
-document.addEventListener('keydown', Keydown);
-document.addEventListener('keyup', Keyup);
-
 function Keyup(e){
     if(
         e.key === 'Right' ||
@@ -208,7 +202,6 @@ function Keyup(e){
         e.key === 'Left' ||
         e.key === 'ArrowLeft'
     ){
-        paddle.dx = 0;
+        paddle.dx = 0;//keep the paddle from going all the way to the selected side continuously
     }
 }
-
