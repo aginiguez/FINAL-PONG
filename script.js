@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 let score = 0;
 
 const brickRowCount = 9;
-const brickColumnCount = 5;
+const brickColumnCount = 4;
 
 const ball = {
     // ball starts in the center of the game
@@ -35,7 +35,7 @@ const brickSpecs= {
     visible: true
 };
 
-//Create bricks
+//Create bricks, help from MDN
 const bricks = [];
 for (let i = 0; i < brickRowCount; i++){
     bricks[i] = [];
@@ -118,15 +118,15 @@ function moveBall() {
         ball.dy = -ball.speed;
     }
 
-    //Brick collision
+    //Brick collision with help from MDN
     bricks.forEach(column => {
         column.forEach(brick => {
             if(brick.visible){
                 if(
-                    ball.x - ball.size > brick.x && //left brick side check
-                    ball.x + ball.size < brick.x  + brick.w && //right brick side check
-                    ball.y + ball.size > brick.y && //top brick side check
-                    ball.y - ball.size < brick.y  + brick.h //bottom brick side check
+                    ball.x - ball.size > brick.x && //left brick 
+                    ball.x + ball.size < brick.x  + brick.w && //right brick
+                    ball.y + ball.size > brick.y && //top brick 
+                    ball.y - ball.size < brick.y  + brick.h //bottom brick 
                 ){
                     ball.dy *= -1;
                     brick.visible = false;
@@ -147,10 +147,6 @@ function moveBall() {
 //Increase score
 function increaseScore() {
     score++;
-
-    if(score % (brickRowCount * brickRowCount) === 0){
-        showAllBricks();
-    }
 }
 
 //Make all bricks appear
@@ -183,10 +179,8 @@ function update() {
 }
 
 update();
-
+      
 document.addEventListener('keydown', Keydown);//when user presses the arrow keys
-document.addEventListener('keyup', Keyup);//when the user releases the arrow key
-
 function Keydown(e) {
     if(e.key === 'Right' || e.key === 'ArrowRight'){
         paddle.dx = paddle.speed
@@ -194,13 +188,14 @@ function Keydown(e) {
         paddle.dx = -paddle.speed
     }
 }
-
+document.addEventListener('keyup', Keyup);//when the user releases the arrow key
 function Keyup(e){
     if(
-        e.key === 'Right' ||
-        e.key === 'ArrowRight' ||
+        e.key === 'ArrowLeft' ||
         e.key === 'Left' ||
-        e.key === 'ArrowLeft'
+        e.key === 'ArrowRight' ||
+        e.key === 'Right' 
+    
     ){
         paddle.dx = 0;//keep the paddle from going all the way to the selected side continuously
     }
